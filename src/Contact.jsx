@@ -45,7 +45,7 @@ function Contact() {
               }}>
                 お問い合わせフォーム <span className="btn-arrow">→</span>
               </a>
-              <a href="https://timerex.net/s/mamoru.fukushima_7c57/35e7bf75/" target="_blank" rel="noopener" className="btn btn-ghost" style={{
+              <a href="https://timerex.net/s/for_company/4d6ee85a/" target="_blank" rel="noopener" className="btn btn-ghost" style={{
                 padding: "22px 30px", fontSize: 14,
                 color: "#fff", borderColor: "rgba(205,218,238,0.3)",
               }}>
