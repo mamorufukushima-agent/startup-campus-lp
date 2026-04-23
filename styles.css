@@ -1,0 +1,230 @@
+/* ===================================================================
+   Startup Campus for Business — Landing Page
+   Design system: Navy enterprise B2B
+   =================================================================== */
+
+:root {
+  /* Brand */
+  --navy-950: #081226;
+  --navy-900: #0b1a35;
+  --navy-800: #102a54;
+  --navy-700: #1a3a73;
+  --navy-600: #264b8f;
+  --navy-500: #3861ae;
+  --navy-400: #6086c8;
+  --navy-300: #9cb4dd;
+  --navy-200: #cad8ee;
+  --navy-100: #e6edf8;
+  --navy-50:  #f3f6fc;
+
+  --accent: #1a73ff;       /* CTA blue */
+  --accent-hover: #0a5ee0;
+  --accent-ink: #0a2f7a;
+
+  /* Neutrals — warm paper */
+  --paper: #fbfaf7;
+  --paper-2: #f5f3ed;
+  --ink-900: #0c1220;
+  --ink-700: #2a2f3d;
+  --ink-600: #474c5b;
+  --ink-500: #6b7082;
+  --ink-400: #9ca0b0;
+  --ink-300: #c8ccd6;
+  --ink-200: #e3e5ec;
+  --ink-100: #eff0f4;
+
+  /* Semantics */
+  --rule: #e1e3ea;
+  --rule-strong: #c8ccd6;
+
+  /* Type */
+  --font-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-mono: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+
+  /* Layout */
+  --maxw: 1200px;
+  --gutter: 32px;
+  --section-py: 120px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-jp);
+  font-feature-settings: "palt";
+  color: var(--ink-900);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em;
+}
+
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.wide { max-width: 1320px; }
+
+/* ------- typography ------- */
+.eyebrow {
+  font-family: var(--font-jp);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--navy-600);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--navy-600);
+}
+.eyebrow.center { justify-content: center; }
+
+.num {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: var(--navy-600);
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.section-title {
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: var(--ink-900);
+  margin-top: 20px;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+.section-title .accent { color: var(--navy-700); }
+
+.section-lead {
+  font-size: 16px;
+  color: var(--ink-600);
+  max-width: 720px;
+  line-height: 1.9;
+  margin: 0;
+}
+
+.section {
+  padding: var(--section-py) 0;
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 64px;
+}
+.section-header.center {
+  text-align: center;
+}
+.section-header.center .section-lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ------- buttons ------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  border-radius: 2px;
+  font-family: var(--font-jp);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: none;
+  transition: all 180ms ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--navy-800);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+}
+.btn-primary:hover {
+  background: var(--navy-900);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(16, 42, 84, 0.25);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--navy-800);
+  border: 1px solid var(--navy-300);
+}
+.btn-ghost:hover {
+  border-color: var(--navy-700);
+  background: var(--navy-50);
+}
+.btn-arrow {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* ------- misc ------- */
+.rule {
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: 0;
+}
+.rule-strong { background: var(--rule-strong); }
+.rule-navy { background: var(--navy-800); }
+
+.chip {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  background: var(--navy-50);
+  color: var(--navy-700);
+  border-radius: 2px;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  padding: 36px;
+}
+
+/* Thin link style */
+.linky {
+  color: var(--navy-700);
+  text-decoration: none;
+  border-bottom: 1px solid var(--navy-200);
+  transition: border-color 180ms;
+}
+.linky:hover { border-color: var(--navy-700); }
+
+/* ------- Responsive nav ------- */
+@media (max-width: 1120px) {
+  .nav-links { gap: 18px !important; }
+  .nav-link { font-size: 12px !important; }
+}
+@media (max-width: 960px) {
+  .nav-link { display: none; }
+  .nav-brand-sub { display: none !important; }
+  .nav-links { gap: 0 !important; }
+}
