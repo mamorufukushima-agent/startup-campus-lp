@@ -11,7 +11,7 @@ function Footer() {
     { l: "導入実績", href: "#cases" },
     { l: "FAQ", href: "#faq" },
     { l: "お問い合わせ", href: "https://startupcampus.work/contact/", ext: true },
-    { l: "打合せを予約", href: "https://timerex.net/s/mamoru.fukushima_7c57/35e7bf75/", ext: true },
+    { l: "打合せを予約", href: "https://timerex.net/s/for_company/4d6ee85a/", ext: true },
   ];
   const companyLinks = [
     { l: "株式会社エージェント", href: "https://agent-network.com/", ext: true },
