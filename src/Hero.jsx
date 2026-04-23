@@ -76,7 +76,7 @@ function Hero() {
               <a href="https://startupcampus.work/contact/" target="_blank" rel="noopener" className="btn btn-primary" style={{ padding: "20px 32px", fontSize: 15 }}>
                 お問い合わせ <span className="btn-arrow">→</span>
               </a>
-              <a href="https://timerex.net/s/mamoru.fukushima_7c57/35e7bf75/" target="_blank" rel="noopener" className="btn btn-ghost" style={{ padding: "20px 26px", fontSize: 14 }}>
+              <a href="https://timerex.net/s/for_company/4d6ee85a/" target="_blank" rel="noopener" className="btn btn-ghost" style={{ padding: "20px 26px", fontSize: 14 }}>
                 打合せを予約 <span className="btn-arrow">→</span>
               </a>
             </div>
