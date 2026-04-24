@@ -1,97 +1,735 @@
-/* Tweaks.jsx — edit-mode panel */
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accentColor": "#1a73ff",
-  "heroHeadline": "新規事業を、\n3か月でカタチにする。",
-  "ctaLabel": "お問い合わせする",
-  "heroStyle": "editorial"
-}/*EDITMODE-END*/;
+/* ===================================================================
+   Startup Campus for Business — Landing Page
+   Design system: Navy enterprise B2B
+   =================================================================== */
 
-function Tweaks() {
-  const [active, setActive] = React.useState(false);
-  const [state, setState] = React.useState(TWEAK_DEFAULTS);
+:root {
+  /* Brand */
+  --navy-950: #081226;
+  --navy-900: #0b1a35;
+  --navy-800: #102a54;
+  --navy-700: #1a3a73;
+  --navy-600: #264b8f;
+  --navy-500: #3861ae;
+  --navy-400: #6086c8;
+  --navy-300: #9cb4dd;
+  --navy-200: #cad8ee;
+  --navy-100: #e6edf8;
+  --navy-50:  #f3f6fc;
 
-  React.useEffect(() => {
-    const onMsg = (e) => {
-      const d = e.data || {};
-      if (d.type === "__activate_edit_mode") setActive(true);
-      if (d.type === "__deactivate_edit_mode") setActive(false);
-    };
-    window.addEventListener("message", onMsg);
-    try { window.parent.postMessage({ type: "__edit_mode_available" }, "*"); } catch(_){}
-    return () => window.removeEventListener("message", onMsg);
-  }, []);
+  --accent: #1a73ff;       /* CTA blue */
+  --accent-hover: #0a5ee0;
+  --accent-ink: #0a2f7a;
 
-  React.useEffect(() => {
-    document.documentElement.style.setProperty("--accent", state.accentColor);
-  }, [state.accentColor]);
+  /* Neutrals — warm paper */
+  --paper: #fbfaf7;
+  --paper-2: #f5f3ed;
+  --ink-900: #0c1220;
+  --ink-700: #2a2f3d;
+  --ink-600: #474c5b;
+  --ink-500: #6b7082;
+  --ink-400: #9ca0b0;
+  --ink-300: #c8ccd6;
+  --ink-200: #e3e5ec;
+  --ink-100: #eff0f4;
 
-  const set = (patch) => {
-    setState(s => ({ ...s, ...patch }));
-    try {
-      window.parent.postMessage({ type: "__edit_mode_set_keys", edits: patch }, "*");
-    } catch(_){}
-  };
+  /* Semantics */
+  --rule: #e1e3ea;
+  --rule-strong: #c8ccd6;
 
-  if (!active) return null;
+  /* Type */
+  --font-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --font-serif: "Noto Serif JP", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-mono: "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
 
-  return (
-    <div style={{
-      position: "fixed", right: 24, bottom: 24, zIndex: 100,
-      width: 320, background: "#fff", border: "1px solid var(--rule-strong)",
-      boxShadow: "0 20px 50px rgba(11,26,53,0.18)", padding: 20,
-      fontFamily: "var(--font-jp)",
-    }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.04em", color: "var(--navy-900)" }}>Tweaks</div>
-        <div style={{ fontSize: 10, color: "var(--ink-500)", fontFamily: "var(--font-mono)", letterSpacing: "0.16em" }}>DESIGN CONTROLS</div>
-      </div>
-
-      <Field label="Accent color">
-        <div style={{ display: "flex", gap: 8 }}>
-          {[
-            { c: "#1a73ff", l: "Bright" },
-            { c: "#0a5ee0", l: "Deep" },
-            { c: "#264b8f", l: "Navy" },
-            { c: "#00a3b4", l: "Teal" },
-          ].map(o => (
-            <button key={o.c} onClick={() => set({ accentColor: o.c })} style={{
-              flex: 1, padding: "10px 6px", cursor: "pointer",
-              border: state.accentColor === o.c ? "2px solid var(--navy-900)" : "1px solid var(--rule)",
-              background: "#fff", fontSize: 10, letterSpacing: "0.1em",
-              display: "flex", flexDirection: "column", alignItems: "center", gap: 6,
-            }}>
-              <span style={{ width: 16, height: 16, background: o.c, display: "block" }}/>
-              {o.l}
-            </button>
-          ))}
-        </div>
-      </Field>
-
-      <Field label="CTA label">
-        <input
-          type="text" value={state.ctaLabel}
-          onChange={e => set({ ctaLabel: e.target.value })}
-          style={{
-            width: "100%", padding: "10px 12px",
-            border: "1px solid var(--rule)", fontSize: 13,
-            fontFamily: "var(--font-jp)",
-          }}
-        />
-        <div style={{ fontSize: 10, color: "var(--ink-500)", marginTop: 6 }}>※ Hero & Nav のボタンラベル（今後連携予定）</div>
-      </Field>
-    </div>
-  );
+  /* Layout */
+  --maxw: 1200px;
+  --gutter: 32px;
+  --section-py: 120px;
 }
 
-function Field({ label, children }) {
-  return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{ fontSize: 10, letterSpacing: "0.16em", fontFamily: "var(--font-mono)", color: "var(--ink-500)", marginBottom: 8, textTransform: "uppercase" }}>
-        {label}
-      </div>
-      {children}
-    </div>
-  );
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-jp);
+  font-feature-settings: "palt";
+  color: var(--ink-900);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em;
 }
 
-window.Tweaks = Tweaks;
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.wide { max-width: 1320px; }
+
+/* ------- typography ------- */
+.eyebrow {
+  font-family: var(--font-jp);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--navy-600);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--navy-600);
+}
+.eyebrow.center { justify-content: center; }
+
+.num {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  color: var(--navy-600);
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.section-title {
+  font-size: clamp(28px, 3.2vw, 44px);
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  color: var(--ink-900);
+  margin-top: 20px;
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+.section-title .accent { color: var(--navy-700); }
+
+.section-lead {
+  font-size: 16px;
+  color: var(--ink-600);
+  max-width: 720px;
+  line-height: 1.9;
+  margin: 0;
+}
+
+.section {
+  padding: var(--section-py) 0;
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 64px;
+}
+.section-header.center {
+  text-align: center;
+}
+.section-header.center .section-lead {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ------- buttons ------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 28px;
+  border-radius: 2px;
+  font-family: var(--font-jp);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  border: none;
+  transition: all 180ms ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--navy-800);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+}
+.btn-primary:hover {
+  background: var(--navy-900);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(16, 42, 84, 0.25);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--navy-800);
+  border: 1px solid var(--navy-300);
+}
+.btn-ghost:hover {
+  border-color: var(--navy-700);
+  background: var(--navy-50);
+}
+.btn-arrow {
+  display: inline-block;
+  transition: transform 180ms ease;
+}
+.btn:hover .btn-arrow { transform: translateX(4px); }
+
+/* ------- misc ------- */
+.rule {
+  height: 1px;
+  background: var(--rule);
+  border: 0;
+  margin: 0;
+}
+.rule-strong { background: var(--rule-strong); }
+.rule-navy { background: var(--navy-800); }
+
+.chip {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  background: var(--navy-50);
+  color: var(--navy-700);
+  border-radius: 2px;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  padding: 36px;
+}
+
+/* Thin link style */
+.linky {
+  color: var(--navy-700);
+  text-decoration: none;
+  border-bottom: 1px solid var(--navy-200);
+  transition: border-color 180ms;
+}
+.linky:hover { border-color: var(--navy-700); }
+
+/* ------- Responsive nav ------- */
+@media (max-width: 1120px) {
+  .nav-links { gap: 18px !important; }
+  .nav-link { font-size: 12px !important; }
+}
+@media (max-width: 960px) {
+  .nav-link { display: none; }
+  .nav-brand-sub { display: none !important; }
+  .nav-links { gap: 0 !important; }
+  .nav-cta { display: none !important; }
+}
+
+/* =========================================================
+   MOBILE (≤ 768px) — iPhone 16/17 全機種対応 (393-440px)
+   ========================================================= */
+@media (max-width: 768px) {
+  :root {
+    --gutter: 20px;
+    --section-py: 64px;
+  }
+
+  body { letter-spacing: 0.005em; }
+
+  /* 全体: 2カラム以上のgridを1カラムに畳む */
+  .mobile-stack,
+  section [style*="grid-template-columns"] {
+    /* JSXインラインstyleを上書きするため個別に対応 */
+  }
+
+  /* セクション余白を詰める */
+  .section { padding: 64px 0 !important; }
+  .section-header { margin-bottom: 36px !important; }
+  .section-title {
+    font-size: clamp(22px, 6vw, 30px) !important;
+    margin-bottom: 16px !important;
+  }
+  .section-lead { font-size: 14px !important; line-height: 1.85 !important; }
+
+  /* 吸着CTAぶんの余白を確保 */
+  body { padding-bottom: 72px; }
+
+  /* カード余白 */
+  .card { padding: 24px !important; }
+
+  /* ボタン */
+  .btn {
+    padding: 14px 20px !important;
+    font-size: 14px !important;
+  }
+
+  /* ---- Hero ---- */
+  #top {
+    padding-top: 100px !important;
+    padding-bottom: 56px !important;
+  }
+  #top > .container > div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  #top h1 {
+    font-size: clamp(32px, 9vw, 44px) !important;
+  }
+  #top h1 span[style*="nowrap"] {
+    white-space: normal !important;
+  }
+  #top p { font-size: 15px !important; line-height: 1.85 !important; }
+
+  /* Hero stats: 横並び4列 → 2列 */
+  #top [style*="repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px 0 !important;
+  }
+  #top [style*="BY THE NUMBERS"],
+  #top [style*="paddingRight: 40"] {
+    grid-column: 1 / -1 !important;
+    padding-right: 0 !important;
+    padding-bottom: 8px !important;
+  }
+  #top [style*="fontSize: 44"] { font-size: 34px !important; }
+
+  /* Hero floating badge */
+  #top [style*="bottom: -20"] {
+    position: static !important;
+    margin-top: 16px;
+    max-width: 100% !important;
+  }
+
+  /* ---- 全セクション: 2+カラムgridを1カラムへ (網羅) ---- */
+  /* 2カラム系 */
+  main [style*="grid-template-columns: 1fr 1fr"],
+  main [style*="grid-template-columns: 1.1fr 1fr"],
+  main [style*="grid-template-columns: 1fr 1.1fr"],
+  main [style*="grid-template-columns: 1.2fr 1fr"],
+  main [style*="grid-template-columns: 1fr 1.2fr"],
+  main [style*="grid-template-columns: 1fr 1.3fr"],
+  main [style*="grid-template-columns: 1.3fr 1fr"],
+  main [style*="grid-template-columns: 1.05fr 1.2fr"],
+  main [style*="grid-template-columns: repeat(2"],
+  main [style*="grid-template-columns: repeat(3"],
+  main [style*="grid-template-columns: repeat(4"],
+  footer [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* Hero proof stats: auto repeat(4,1fr) → 2列 */
+  #top [style*="auto repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 24px 20px !important;
+  }
+  /* Hero proof の BY THE NUMBERS ラベル */
+  #top [style*="auto repeat(4, 1fr)"] > div:first-child {
+    grid-column: 1 / -1 !important;
+    padding-right: 0 !important;
+    padding-bottom: 8px !important;
+    border-left: 0 !important;
+  }
+  #top [style*="auto repeat(4, 1fr)"] > div {
+    padding-left: 0 !important;
+    border-left: 0 !important;
+    padding: 8px 0 !important;
+  }
+
+  /* Hero 2x2 写真グリッド: そのまま2x2で残す (縦に細長くなるのを防ぐ) */
+  #top [style*="gridTemplateColumns"][style*="1fr 1fr"][style*="gridTemplateRows"],
+  #top [style*="grid-template-columns: 1fr 1fr"][style*="grid-template-rows"] {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* Flow: 72px 1fr 240px → 縦積み */
+  #flow [style*="72px 1fr 240px"] {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  /* Faq: auto 1fr auto は小さいのでそのまま */
+  #faq [style*="auto 1fr auto"] {
+    grid-template-columns: auto 1fr auto !important;
+    gap: 12px !important;
+  }
+
+  /* Contact: 80px 1fr (TEL/MAILラベル) はそのまま残す */
+  #contact [style*="80px 1fr"] {
+    grid-template-columns: 60px 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* Compare 5カラム: 横スクロール化 */
+  #compare [style*="1.25fr 0.95fr 0.95fr 0.95fr 1.15fr"] {
+    grid-template-columns: 140px repeat(4, 140px) !important;
+    min-width: 760px;
+  }
+  #compare > .container > div {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -20px;
+    padding: 0 20px 8px;
+  }
+
+  /* Roadmap FIT (6ステップ): 画面内に全ステップを収める */
+  #roadmap [style*="repeat(6, 1fr)"] {
+    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
+    gap: 3px !important;
+  }
+  /* Fit Journey 外枠: パディング縮小 */
+  #roadmap [style*="padding: 48px 32px 40px"] {
+    padding: 20px 10px 18px !important;
+  }
+  /* ステップカード内部 */
+  #roadmap [style*="repeat(6, 1fr)"] > div > div:first-child {
+    padding: 10px 2px 9px !important;
+    min-height: 86px;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+  /* STEP 0x ラベル */
+  #roadmap [style*="repeat(6, 1fr)"] > div > div:first-child > div:nth-child(1) {
+    font-size: 8px !important;
+    letter-spacing: 0.1em !important;
+    margin-bottom: 4px !important;
+  }
+  /* 略号 (CPF / PSF など) */
+  #roadmap [style*="repeat(6, 1fr)"] > div > div:first-child > div:nth-child(2) {
+    font-size: 15px !important;
+    letter-spacing: 0.02em !important;
+  }
+  /* フルネーム: モバイルでは非表示（略号だけで判別可） */
+  #roadmap [style*="repeat(6, 1fr)"] > div > div:first-child > div:nth-child(3) {
+    display: none !important;
+  }
+
+  /* ---- Outcomes: 2x2 の border/padding リセット ---- */
+  #outcomes [style*="repeat(2, 1fr)"] > div {
+    padding: 28px 0 !important;
+    border-right: 0 !important;
+    border-bottom: 1px solid rgba(205,218,238,0.15) !important;
+  }
+  #outcomes [style*="repeat(2, 1fr)"] > div:last-child {
+    border-bottom: none !important;
+  }
+
+  /* ---- Targets: 2x2 的な仕切り線を縦用に ---- */
+  #targets [style*="repeat(3, 1fr)"] > div {
+    border-left: 0 !important;
+    border-top: 1px solid var(--rule) !important;
+    padding: 24px 0 !important;
+  }
+
+  /* ---- Challenges: ブロックヘッダー auto 1fr auto ---- */
+  #challenges [style*="auto 1fr auto"] {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  /* ---- Cases: 縦書き/極細カラム防止 ---- */
+  #cases [style*="1.05fr 1.2fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  #cases h2,
+  #cases h3 {
+    writing-mode: horizontal-tb !important;
+    word-break: keep-all !important;
+    overflow-wrap: anywhere !important;
+    font-size: clamp(22px, 6vw, 32px) !important;
+  }
+  /* Cases の巨大な「鳥取県」を適正サイズに */
+  #cases [style*="font-size: 80"],
+  #cases [style*="fontSize: 80"],
+  #cases [style*="font-size: 96"],
+  #cases [style*="fontSize: 96"],
+  #cases [style*="font-size: 120"],
+  #cases [style*="fontSize: 120"] {
+    font-size: 40px !important;
+    line-height: 1.2 !important;
+  }
+  /* Cases 左側イメージが縦長でオーバーラップ */
+  #cases article > div {
+    padding: 28px 20px !important;
+  }
+  #cases article img {
+    max-height: 280px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  /* ---- Mentors: 追加メンター枠 ---- */
+  #mentors [style*="1fr 1.2fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ---- Pricing: 2カラム左右分割 ---- */
+  #pricing [style*="1fr 1.3fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Pricing の features list は 2列 → 1列に */
+  #pricing ul[style*="repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+  /* Pricing の縦書き風「60 万円/3か月」対策 */
+  #pricing [style*="flex-direction: column"],
+  #pricing [style*="flexDirection: column"] {
+    align-items: flex-start !important;
+  }
+  #pricing [style*="writing-mode"] {
+    writing-mode: horizontal-tb !important;
+  }
+
+  /* ---- Contact: 2カラム＋右側が縦書き化してた問題 ---- */
+  #contact [style*="1.2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  #contact dd {
+    word-break: break-all;
+    overflow-wrap: anywhere;
+  }
+
+  /* ---- 見出し全般の縦書き防止 ---- */
+  main h1, main h2, main h3 {
+    writing-mode: horizontal-tb !important;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  /* ---- Challenges ヘッダー右カラムの幅不足で縦書き化するのを防ぐ ---- */
+  #challenges .section-header {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  #challenges .section-header p {
+    max-width: 100% !important;
+  }
+  #targets .section-header {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* 鳥取事例はモバイルで非表示（縦長すぎるため） */
+  #cases .featured-case {
+    display: none !important;
+  }
+
+  /* ロゴをモバイルで大きく */
+  .nav-logo {
+    height: 38px !important;
+  }
+  .hero-eyebrow-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    margin-bottom: 24px !important;
+  }
+
+  /* Roadmap 背景SVGはモバイルで非表示 (横スクロール時に位置がずれるため) */
+  #roadmap svg[style*="position: absolute"] {
+    display: none !important;
+  }
+  /* Roadmap 矢印アイコンも位置調整 */
+  #roadmap [style*="right: -12"] {
+    display: none !important;
+  }
+
+  /* ---- Flow: 5ステップを読みやすいレイアウトに ---- */
+  #flow [style*="72px 1fr 240px"] {
+    grid-template-columns: 48px 1fr !important;
+    gap: 16px !important;
+    padding: 20px 0 !important;
+    align-items: start !important;
+  }
+  /* 番号ブロックを小さく */
+  #flow [style*="72px 1fr 240px"] > div:first-child {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 18px !important;
+  }
+  /* DURATION/mode ブロックを 2列目下に流し込み */
+  #flow [style*="72px 1fr 240px"] > div:last-child {
+    grid-column: 2 !important;
+    text-align: left !important;
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    padding-top: 10px !important;
+    margin-top: 4px !important;
+    border-top: 1px dashed var(--rule) !important;
+  }
+  #flow [style*="72px 1fr 240px"] > div:last-child > div {
+    margin: 0 !important;
+  }
+  #flow [style*="72px 1fr 240px"] > div:last-child > div:nth-child(2) {
+    font-size: 14px !important;
+  }
+  /* 中央カラムの見出しを少し小さく */
+  #flow [style*="72px 1fr 240px"] > div:nth-child(2) h3 {
+    font-size: 17px !important;
+    margin-bottom: 6px !important;
+  }
+  #flow [style*="72px 1fr 240px"] > div:nth-child(2) p {
+    font-size: 13px !important;
+    line-height: 1.8 !important;
+  }
+  /* 縦スパイン位置調整 */
+  #flow [style*="left: 36"] {
+    left: 23px !important;
+  }
+
+  /* Flow / Roadmap 縦線スタイルをモバイルでも見やすく */
+  main section img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Footer リンク群 */
+  footer div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* Pricing の金額ブロック */
+  #pricing [style*="fontSize: 48"],
+  #pricing [style*="fontSize: 56"],
+  #pricing [style*="fontSize: 64"] {
+    font-size: 38px !important;
+  }
+}
+
+/* =========================================================
+   Sticky CTA bar (mobile only)
+   ========================================================= */
+.sticky-cta {
+  display: none;
+}
+@media (max-width: 768px) {
+  .sticky-cta {
+    display: flex;
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    z-index: 50;
+    background: rgba(11, 26, 53, 0.96);
+    backdrop-filter: saturate(140%) blur(8px);
+    padding: 10px 12px;
+    gap: 8px;
+    border-top: 1px solid var(--navy-700);
+    box-shadow: 0 -6px 20px rgba(11,26,53,0.18);
+  }
+  .sticky-cta a {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 13px 10px;
+    font-family: var(--font-jp);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .sticky-cta .sc-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .sticky-cta .sc-ghost {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+}
+
+/* =========================================================
+   Hamburger menu (mobile only)
+   ========================================================= */
+.hamburger {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  border-radius: 2px;
+}
+.hamburger span {
+  display: block;
+  width: 18px;
+  height: 1.5px;
+  background: var(--ink-900);
+  position: relative;
+}
+.hamburger span::before,
+.hamburger span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 18px;
+  height: 1.5px;
+  background: var(--ink-900);
+  transition: transform 200ms ease, top 200ms ease;
+}
+.hamburger span::before { top: -6px; }
+.hamburger span::after  { top: 6px; }
+.hamburger.open span { background: transparent; }
+.hamburger.open span::before { top: 0; transform: rotate(45deg); }
+.hamburger.open span::after  { top: 0; transform: rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+}
+
+@media (max-width: 960px) {
+  .hamburger { display: inline-flex; }
+  .mobile-menu {
+    display: block;
+    position: fixed;
+    top: 72px; left: 0; right: 0;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    box-shadow: 0 10px 30px rgba(11,26,53,0.12);
+    z-index: 39;
+    transform: translateY(-120%);
+    transition: transform 260ms cubic-bezier(.2,.8,.2,1);
+    padding: 12px 0 20px;
+  }
+  .mobile-menu.open {
+    transform: translateY(0);
+  }
+  .mobile-menu a {
+    display: block;
+    padding: 14px 24px;
+    font-size: 15px;
+    color: var(--ink-900);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    letter-spacing: 0.04em;
+  }
+  .mobile-menu a:last-child {
+    border-bottom: none;
+    margin-top: 8px;
+    margin-left: 24px;
+    margin-right: 24px;
+    text-align: center;
+    background: var(--navy-800);
+    color: #fff;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+}
