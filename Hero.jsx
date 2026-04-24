@@ -1,71 +1,217 @@
-/* Flow.jsx — 5 step process */
-function Flow() {
-  const steps = [
-    { n: "01", title: "お問い合わせ", dur: "1分", body: "フォームより貴社の関心領域・現状の課題を簡単にお伺いします。", mode: "WEBフォーム" },
-    { n: "02", title: "無料オンライン相談", dur: "30分 〜 60分", body: "事業責任者またはメンターが、貴社の課題・人材育成方針をヒアリング。プログラム概要とフィット感をご説明します。", mode: "オンライン / 無料" },
-    { n: "03", title: "ご提案 / 設計", dur: "1 〜 2週間", body: "貴社の課題・目的に合わせて、対象者の人選・テーマ設定・スケジュールを設計し、お見積もりをご提出します。", mode: "カスタマイズ提案" },
-    { n: "04", title: "ご契約 / 開講", dur: "最短 2週間", body: "電子契約に対応。最短2週間で開講可能です。ここから3か月のプログラムがスタートします。", mode: "電子契約" },
-    { n: "05", title: "成果発表", dur: "3か月後", body: "経営陣を招いたビジネスプランコンテストで、3か月の成果をプレゼンします。", mode: "貴社 or 外部会場" },
-  ];
-
+/* Hero.jsx — editorial hero with 2x2 photo grid */
+function Hero() {
   return (
-    <section id="flow" className="section" style={{ background: "var(--paper)" }}>
-      <div className="container">
-        <div className="section-header">
-          <span className="eyebrow">Process / 今後の流れ</span>
-          <h2 className="section-title" style={{ marginTop: 24 }}>
-            お問い合わせから成果発表まで、<br/>
-            <span className="accent">5つのステップ</span>。
-          </h2>
+    <section id="top" style={{
+      position: "relative",
+      paddingTop: 140,
+      paddingBottom: 100,
+      background: "linear-gradient(180deg, #fbfaf7 0%, #fbfaf7 60%, #f3f6fc 100%)",
+      overflow: "hidden",
+    }}>
+      <HeroGrid />
+
+      <div className="container wide" style={{ position: "relative", zIndex: 2 }}>
+
+        <div className="hero-eyebrow-row" style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 36, flexWrap: "wrap" }}>
+          <span className="eyebrow">Startup Campus / For Business</span>
+          <span style={{
+            fontSize: 11, color: "var(--ink-500)",
+            letterSpacing: "0.16em",
+          }}>
+            企業向け 新規事業開発支援プログラム
+          </span>
         </div>
 
-        <div style={{ position: "relative" }}>
-          {/* vertical spine */}
-          <div style={{
-            position: "absolute",
-            left: 36, top: 20, bottom: 20,
-            width: 1, background: "var(--rule-strong)",
-          }}/>
-          {steps.map((s, i) => (
-            <div key={i} style={{
-              display: "grid",
-              gridTemplateColumns: "72px 1fr 240px",
-              gap: 24,
-              padding: "28px 0",
-              borderBottom: i < steps.length - 1 ? "1px solid var(--rule)" : "none",
-              alignItems: "center",
-              position: "relative",
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1.1fr 1fr",
+          gap: 56,
+          alignItems: "center",
+        }}>
+          {/* Left copy column */}
+          <div>
+            <h1 style={{
+              fontSize: "clamp(38px, 5.2vw, 76px)",
+              fontWeight: 700,
+              lineHeight: 1.22,
+              letterSpacing: "0.01em",
+              color: "var(--navy-950)",
+              marginBottom: 28,
+              wordBreak: "keep-all",
             }}>
-              <div style={{
-                width: 72, height: 72,
-                background: "var(--navy-900)",
-                color: "#fff",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontFamily: "var(--font-serif)", fontSize: 28, fontWeight: 500,
-                position: "relative", zIndex: 2,
-              }}>{s.n}</div>
+              <span style={{ display: "block", whiteSpace: "nowrap" }}>事業開発人材を育て、</span>
+              <span style={{ display: "block", whiteSpace: "nowrap" }}>
+                <span style={{ color: "var(--accent)" }}>事業</span>を創る。
+              </span>
+            </h1>
 
+            <div style={{
+              display: "inline-block",
+              padding: "10px 18px",
+              background: "#fff",
+              border: "1px solid var(--rule-strong)",
+              fontSize: 13,
+              color: "var(--navy-800)",
+              letterSpacing: "0.05em",
+              marginBottom: 32,
+              fontWeight: 500,
+            }}>
+              研修 × 事業開発を同時に実現する、実践・伴走型プログラム
+            </div>
+
+            <p style={{
+              fontSize: 17,
+              lineHeight: 2,
+              color: "var(--ink-700)",
+              maxWidth: 540,
+              margin: "0 0 40px",
+              letterSpacing: "0.03em",
+            }}>
+              事業開発のプロが伴走し、社員自身が手を動かす。<br/>
+              検証済みの事業計画と、自走できる次世代リーダー。<br/>
+              その両方を、3か月で手にするプログラムです。
+            </p>
+
+            <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 0, flexWrap: "wrap" }}>
+              <a href="https://startupcampus.work/contact/" target="_blank" rel="noopener" className="btn btn-primary" style={{ padding: "20px 32px", fontSize: 15 }}>
+                お問い合わせ <span className="btn-arrow">→</span>
+              </a>
+              <a href="https://timerex.net/s/for_company/4d6ee85a/" target="_blank" rel="noopener" className="btn btn-ghost" style={{ padding: "20px 26px", fontSize: 14 }}>
+                打合せを予約 <span className="btn-arrow">→</span>
+              </a>
+            </div>
+            <div style={{ fontSize: 12, color: "var(--ink-500)", letterSpacing: "0.1em", marginTop: 16 }}>
+              
+            </div>
+          </div>
+
+          {/* Right: 2x2 photo grid */}
+          <div style={{ position: "relative" }}>
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gridTemplateRows: "1fr 1fr",
+              gap: 10,
+              aspectRatio: "1 / 1.1",
+              maxHeight: 620,
+            }}>
+              <PhotoTile src="assets/photo-kiri.webp" pos="center 25%" />
+              <PhotoTile src="assets/photo-josei.webp" pos="center 30%" />
+              <PhotoTile src="assets/photo-shimokatasan.webp" pos="center 30%" />
+              <PhotoTile src="assets/photo-wagatsuma.webp" pos="center 25%" />
+            </div>
+
+            {/* Floating badge */}
+            <div style={{
+              position: "absolute",
+              bottom: -20, left: -20,
+              background: "#fff",
+              border: "1px solid var(--rule)",
+              padding: "18px 22px",
+              boxShadow: "0 14px 30px rgba(11,26,53,0.10)",
+              display: "flex", alignItems: "center", gap: 14,
+              maxWidth: 290,
+            }}>
+              <img src="assets/jpx.png" alt="JPX 東証上場" style={{ width: 44, height: "auto", objectFit: "contain" }}/>
               <div>
-                <h3 style={{ fontSize: 22, color: "var(--navy-900)", marginBottom: 8, letterSpacing: "0.03em" }}>
-                  {s.title}
-                </h3>
-                <p style={{ fontSize: 14, color: "var(--ink-600)", margin: 0, lineHeight: 1.9 }}>
-                  {s.body}
-                </p>
-              </div>
-
-              <div style={{ textAlign: "right" }}>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.18em", color: "var(--navy-600)", marginBottom: 4 }}>
-                  DURATION
+                <div style={{ fontSize: 10, letterSpacing: "0.18em", color: "var(--ink-500)", marginBottom: 4 }}>
+                  運営元
                 </div>
-                <div style={{ fontSize: 16, fontWeight: 600, color: "var(--ink-900)" }}>{s.dur}</div>
-                <div style={{ fontSize: 12, color: "var(--ink-500)", marginTop: 2 }}>{s.mode}</div>
+                <div style={{ fontSize: 13, fontWeight: 700, color: "var(--navy-900)", letterSpacing: "0.02em" }}>
+                  株式会社エージェント
+                </div>
+                <div style={{ fontSize: 11, color: "var(--ink-500)", marginTop: 2 }}>
+                  TOKYO PRO MARKET / 7098
+                </div>
               </div>
             </div>
-          ))}
+          </div>
+        </div>
+
+        {/* Proof strip */}
+        <div style={{ marginTop: 80 }}>
+          <HeroProof />
         </div>
       </div>
     </section>
   );
 }
-window.Flow = Flow;
+
+function PhotoTile({ src, pos }) {
+  return (
+    <div style={{
+      background: "var(--navy-100)",
+      overflow: "hidden",
+      border: "1px solid var(--rule)",
+      position: "relative",
+    }}>
+      <img src={src} alt="" style={{
+        width: "100%", height: "100%", objectFit: "cover",
+        objectPosition: pos || "center",
+        display: "block",
+      }}/>
+    </div>
+  );
+}
+
+function HeroProof() {
+  const stats = [
+    { n: "50+", label: "事業開発実績" },
+    { n: "22", label: "展開事業数" },
+    { n: "300+", label: "専任メンター" },
+    { n: "7", label: "社会課題領域" },
+  ];
+  return (
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "auto repeat(4, 1fr)",
+      alignItems: "center",
+      gap: 0,
+      paddingTop: 36,
+      borderTop: "1px solid var(--rule)",
+    }}>
+      <div style={{
+        paddingRight: 40,
+        fontSize: 11,
+        letterSpacing: "0.16em",
+        color: "var(--ink-500)",
+      }}>
+        <div style={{ marginBottom: 4 }}>BY THE NUMBERS</div>
+        <div style={{ fontSize: 10, color: "var(--ink-400)" }}>数字で見るスタキャン</div>
+      </div>
+      {stats.map((s, i) => (
+        <div key={i} style={{
+          paddingLeft: 32,
+          borderLeft: "1px solid var(--rule)",
+        }}>
+          <div style={{
+            fontFamily: "var(--font-serif)",
+            fontSize: 44,
+            fontWeight: 600,
+            color: "var(--navy-800)",
+            lineHeight: 1,
+            marginBottom: 8,
+            letterSpacing: "-0.01em",
+          }}>{s.n}</div>
+          <div style={{ fontSize: 12, color: "var(--ink-500)", letterSpacing: "0.1em" }}>{s.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function HeroGrid() {
+  return (
+    <div aria-hidden style={{
+      position: "absolute", inset: 0,
+      backgroundImage:
+        "linear-gradient(var(--ink-200) 1px, transparent 1px), linear-gradient(90deg, var(--ink-200) 1px, transparent 1px)",
+      backgroundSize: "80px 80px",
+      opacity: 0.35,
+      maskImage: "radial-gradient(ellipse at 90% 10%, black 0%, transparent 70%)",
+      WebkitMaskImage: "radial-gradient(ellipse at 90% 10%, black 0%, transparent 70%)",
+    }} />
+  );
+}
+
+window.Hero = Hero;
